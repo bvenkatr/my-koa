@@ -1,18 +1,24 @@
 'use strict';
-var koa = require('koa');
-var app = module.exports = koa();
-var parse = require('co-body');
+var Koa = require('koa');
+var app = new Koa();
 
 let port = process.argv[2] || 3000;
 
-app.use(function *(next) {
+app.use(async (ctx, next) => {
+  //TODO this.path is not correct to get url path, so get path from ctx
   if (this.path !== '/') {
-    return yield next;
+    await next();
   }
 
-  this.body = "Hello KoaJS";
+  console.log("I should be second one");
+  ctx.body = 'we are at home!';
 });
 
-if (!module.parent) app.listen(port, function () {
+app.use(async (ctx, next) => {
+  console.log("I should be first one");
+});
+
+if (!module.parent) app.listen(port
+    , function () {
   console.log(`Web Server is listening at ${port}`)
 });

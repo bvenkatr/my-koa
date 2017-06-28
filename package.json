@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "co-body": "^4.2.0",
-    "koa": "^1.2.0"
+    "koa": "2.2.0"
   }
 }
