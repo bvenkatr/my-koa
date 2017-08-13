@@ -1,5 +1,6 @@
 let Koa = require("koa");
 let coBodyParser = require("co-body");
+let fs = require("fs");
 
 // get the Koa instance
 let app = new Koa();
@@ -7,20 +8,17 @@ let app = new Koa();
 let port = process.argv[2];
 
 app.use(async (ctx, next) => {
-    if (ctx.method !== "POST") {
-        return await next;
+    if (ctx.path !== "/json") {
+        return await next();
     }
-    let body = await coBodyParser(ctx);
-    // use below url to work with coBodyParser
-    // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST -d '{"name" : "koa"}' localhost:4000
+    ctx.body = {foo: 'bar'};
+});
 
-    //use json and make a request from curl like below
-    // let body = await coBodyParser.json(ctx);
-    //curl -H "Content-Type: application/json" -X POST -d '{"name" : "koa"}' localhost:4000
-
-    // if body.name not exist, respond `400`
-    if (!body.name) ctx.throw(400, '.name required');
-    ctx.body = body.name.toUpperCase();
+app.use(async (ctx, next) => {
+    if (ctx.path !== "/stream") {
+        return await next();
+    }
+    ctx.body = fs.createReadStream(process.argv[3]);
 });
 
 app.listen(port, function () {
