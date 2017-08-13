@@ -1,24 +1,14 @@
-'use strict';
-var Koa = require('koa');
-var app = new Koa();
+let Koa = require("koa");
 
-let port = process.argv[2] || 3000;
+// get the Koa instance
+let app = new Koa();
 
-app.use(async (ctx, next) => {
-  //TODO this.path is not correct to get url path, so get path from ctx
-  if (this.path !== '/') {
-    await next();
-  }
+let port = process.argv[2];
 
-  console.log("I should be second one");
-  ctx.body = 'we are at home!';
+app.use(function (ctx, next) {
+    ctx.body = "hello koa";
 });
 
-app.use(async (ctx, next) => {
-  console.log("I should be first one");
-});
-
-if (!module.parent) app.listen(port
-    , function () {
-  console.log(`Web Server is listening at ${port}`)
+app.listen(port, function () {
+    console.log(`server is listening on ${port}`);
 });
