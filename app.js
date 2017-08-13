@@ -1,4 +1,5 @@
 let Koa = require("koa");
+let coBodyParser = require("co-body");
 
 // get the Koa instance
 let app = new Koa();
@@ -6,24 +7,20 @@ let app = new Koa();
 let port = process.argv[2];
 
 app.use(async (ctx, next) => {
-    if (ctx.path !== "/") {
-        return await next()
+    if (ctx.method !== "POST") {
+        return await next;
     }
-    ctx.body = "hello koa";
-});
+    let body = await coBodyParser(ctx);
+    // use below url to work with coBodyParser
+    // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST -d '{"name" : "koa"}' localhost:4000
 
-app.use(async (ctx, next) => {
-    if (ctx.path !== "/404") {
-        return await next()
-    }
-    ctx.body = "page not found"
-});
+    //use json and make a request from curl like below
+    // let body = await coBodyParser.json(ctx);
+    //curl -H "Content-Type: application/json" -X POST -d '{"name" : "koa"}' localhost:4000
 
-app.use(async (ctx, next) => {
-    if (ctx.path !== "/500") {
-        return await next();
-    }
-    ctx.body = "internal server error";
+    // if body.name not exist, respond `400`
+    if (!body.name) ctx.throw(400, '.name required');
+    ctx.body = body.name.toUpperCase();
 });
 
 app.listen(port, function () {
