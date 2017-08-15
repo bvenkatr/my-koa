@@ -19,3 +19,11 @@ app.use((ctx, next) => {
 app.listen(port, function () {
     console.log(`server is listening on ${port}`);
 });
+
+/**
+ koa-session uses cookie-based sessions, and koa-generic-session is a more
+ generic implementation, as in Express.
+
+ https://github.com/koajs/session
+ https://github.com/koajs/generic-session
+ */
