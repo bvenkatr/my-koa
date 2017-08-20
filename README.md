@@ -55,3 +55,40 @@ app.use(async (ctx, next) => {
     ctx.body = body.name.toUpperCase();
 });
 
+/**
+To close a server
+const app = new Koa();
+  const _server = app.listen(3000);  // start
+
+
+ _server.close();   // stop
+ ///
+
+////////////////////////////////////////////////////////////////////////
+var destroyable = require('server-destroy');
+var http = require('http');
+
+var server = http.createServer(app.callback());
+server.listen();
+destroyable(server);
+
+// then
+server.destroy();
+
+////////////////////////////////////////////////////////////////////////
+Since Express comes with its own routing, but Koa does not have
+ +  any in-built routing, but there are third party libraries available
+ +  koa-router and koa-route for routing.
+ +  Similarly just like we have helmet for security in Express, For koa
+ +  we have koa-helmet available and the list goes on for koa third
+ +  party available libraries.
+ ////////////////
+ 
+ /**
+  koa-session uses cookie-based sessions, and koa-generic-session is a more
+  generic implementation, as in Express.
+ 
+  https://github.com/koajs/session
+  https://github.com/koajs/generic-session
+  */
+  
